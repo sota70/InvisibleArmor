@@ -1,0 +1,9 @@
+name: InvisibleArmor
+version: @version@
+author: sota70
+main: com.invisiblearmor.InvisibleArmor
+api-version: 1.16
+commands:
+  hidearmor:
+    description: "This command hides your(or someone)'s armor"
+    usage: /hidearmor
