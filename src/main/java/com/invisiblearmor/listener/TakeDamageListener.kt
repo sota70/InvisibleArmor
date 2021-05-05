@@ -17,8 +17,6 @@ class TakeDamageListener(private val plugin: InvisibleArmor) : Listener {
      * 装備を着ている時と同じダメージに計算しなおすメソッド
      *
      * @param event ダメージを受けたことを感知するイベント
-     *
-     * Todo: ダメージの公式が違うので直す必要あり
      */
     @EventHandler
     fun onTakeDamage(event: EntityDamageEvent) {
