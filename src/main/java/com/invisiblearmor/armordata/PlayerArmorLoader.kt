@@ -23,39 +23,14 @@ class PlayerArmorLoader(
      * @param equipmentSlot 読み込みたいアーマーの部位
      * @return 読み込んだ[ItemStack]を返す
      */
-    fun loadArmor(equipmentSlot: EnumItemSlot): ItemStack = when (equipmentSlot) {
-        EnumItemSlot.HEAD -> loadHeadEquipment()
-        EnumItemSlot.CHEST -> loadChestEquipment()
-        EnumItemSlot.LEGS -> loadLegsEquipment()
-        EnumItemSlot.FEET -> loadFeetEquipment()
-        else -> throw IllegalStateException("loadArmorメソッドで予期できない例外が発生しました")
-    }
-
-    // ヘルメットを読み込むメソッド
-    private fun loadHeadEquipment(): ItemStack {
+    fun loadArmor(equipmentSlot: EnumItemSlot): ItemStack {
         val playerArmorData = plugin.getPlayerArmorData()
-        val playerHeadEquipment = playerArmorData[player]?.helmet
-        return playerHeadEquipment ?: ItemStack(Material.AIR)
-    }
-
-    // チェストプレートを読み込むメソッド
-    private fun loadChestEquipment(): ItemStack {
-        val playerArmorData = plugin.getPlayerArmorData()
-        val playerChestEquipment = playerArmorData[player]?.chestplate
-        return playerChestEquipment ?: ItemStack(Material.AIR)
-    }
-
-    // レギンスを読み込むメソッド
-    private fun loadLegsEquipment(): ItemStack {
-        val playerArmorData = plugin.getPlayerArmorData()
-        val playerLegsEquipment = playerArmorData[player]?.leggings
-        return playerLegsEquipment ?: ItemStack(Material.AIR)
-    }
-
-    // ブーツを読み込むメソッド
-    private fun loadFeetEquipment(): ItemStack {
-        val playerArmorData = plugin.getPlayerArmorData()
-        val playerFeetEquipment = playerArmorData[player]?.boots
-        return playerFeetEquipment ?: ItemStack(Material.AIR)
+        return when (equipmentSlot) {
+            EnumItemSlot.HEAD -> playerArmorData[player]?.helmet ?: ItemStack(Material.AIR)
+            EnumItemSlot.CHEST -> playerArmorData[player]?.chestplate ?: ItemStack(Material.AIR)
+            EnumItemSlot.LEGS -> playerArmorData[player]?.leggings ?: ItemStack(Material.AIR)
+            EnumItemSlot.FEET -> playerArmorData[player]?.boots ?: ItemStack(Material.AIR)
+            else -> throw IllegalStateException("loadArmorメソッドで予期できない例外が発生しました")
+        }
     }
 }
