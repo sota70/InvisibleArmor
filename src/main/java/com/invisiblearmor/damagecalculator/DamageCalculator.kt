@@ -18,8 +18,8 @@ class DamageCalculator(
 
     /**
      * ダメージ軽減値を用いて最終的なダメージ値を計算するメソッド
-     * [参考にしたサイト][https://minecraft.fandom.com/wiki/Talk:Armor]
-     * 参考にした公式: (25 - Armor value) / 25 * damage
+     * [参考にしたサイト][https://minecraft.fandom.com/wiki/Armor]
+     * 参考にした公式: マイクラのダメージ公式をそのまま採用
      *
      * @return 最終的なダメージ値を[Double]型で返す
      */
