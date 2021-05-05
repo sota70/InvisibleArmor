@@ -7,7 +7,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 
 /**
- * アーマーGUIをクリックした時のリスナークラス
+ * プレイヤーがインベントリー内のアイテムをクリックしたときの処理をするクラス
  */
 class EditArmorGUIListener : Listener {
 
