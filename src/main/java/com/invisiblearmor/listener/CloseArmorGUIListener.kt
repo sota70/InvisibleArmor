@@ -3,60 +3,107 @@ package com.invisiblearmor.listener
 import com.invisiblearmor.InvisibleArmor
 import com.invisiblearmor.armordata.PlayerArmorComplement
 import com.invisiblearmor.template.ArmorGUIName.ARMOR_GUI_NAME
+import com.invisiblearmor.util.ArmorIdentifier
 import net.minecraft.server.v1_16_R3.EnumItemSlot
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 
+/**
+ * プレイヤーがインベントリーを閉じたときの処理をするクラス
+ *
+ * @property plugin プラグインのメインクラス
+ */
 class CloseArmorGUIListener(private val plugin: InvisibleArmor) : Listener {
 
+    /**
+     * 閉じたインベントリーがArmorGUIだった場合、アーマーの保存処理を行うメソッド
+     *
+     * @param event プレイヤーがインベントリーを閉じたのを感知するイベント
+     */
     @EventHandler
     fun onCloseInv(event: InventoryCloseEvent) {
         if (event.view.title != ARMOR_GUI_NAME) return
         val player = event.player as Player
-        val closedInventory = event.inventory
-        val playerArmorComplement = PlayerArmorComplement(plugin, player)
-        savePlayerHelmet(playerArmorComplement, closedInventory)
-        savePlayerChestplate(playerArmorComplement, closedInventory)
-        savePlayerLeggings(playerArmorComplement, closedInventory)
-        savePlayerBoots(playerArmorComplement, closedInventory)
+        val armorGUI = event.inventory
+        val helmet: ItemStack? = armorGUI.contents[10]
+        val chestplate: ItemStack? = armorGUI.contents[12]
+        val leggings: ItemStack? = armorGUI.contents[14]
+        val boots: ItemStack? = armorGUI.contents[16]
+        saveHelmetOrGiveBack(player, helmet)
+        saveChestplateOrGiveBack(player, chestplate)
+        saveLeggingsOrGiveBack(player, leggings)
+        saveBootsOrGiveBack(player, boots)
     }
 
     // プレイヤーのヘルメットを保存するメソッド
-    private fun savePlayerHelmet(
-        playerArmorComplement: PlayerArmorComplement,
-        inventory: Inventory
-    ) {
-        val helmet = inventory.contents[10]
-        playerArmorComplement.complementArmor(helmet, EnumItemSlot.HEAD)
+    // もしアイテムがヘルメットでない場合、そのアイテムを返す
+    private fun saveHelmetOrGiveBack(player: Player, helmet: ItemStack?) {
+        val playerArmorComplement = PlayerArmorComplement(plugin, player)
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemHelmet(helmet?.type)) {
+            giveItemBack(player, helmet)
+            playerArmorComplement.complementArmor(ItemStack(Material.AIR), EnumItemSlot.HEAD)
+        } else {
+            playerArmorComplement.complementArmor(helmet, EnumItemSlot.HEAD)
+        }
     }
 
     // プレイヤーのチェストプレートを保存するメソッド
-    private fun savePlayerChestplate(
-        playerArmorComplement: PlayerArmorComplement,
-        inventory: Inventory
-    ) {
-        val chestplate = inventory.contents[12]
-        playerArmorComplement.complementArmor(chestplate, EnumItemSlot.CHEST)
+    // もしアイテムがチェストプレートでない場合、そのアイテムを返す
+    private fun saveChestplateOrGiveBack(player: Player, chestplate: ItemStack?) {
+        val playerArmorComplement = PlayerArmorComplement(plugin, player)
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemChestplate(chestplate?.type)) {
+            giveItemBack(player, chestplate)
+            playerArmorComplement.complementArmor(ItemStack(Material.AIR), EnumItemSlot.CHEST)
+        } else {
+            playerArmorComplement.complementArmor(chestplate, EnumItemSlot.CHEST)
+        }
     }
 
     // プレイヤーのレギンスを保存するメソッド
-    private fun savePlayerLeggings(
-        playerArmorComplement: PlayerArmorComplement,
-        inventory: Inventory
-    ) {
-        val leggings = inventory.contents[14]
-        playerArmorComplement.complementArmor(leggings, EnumItemSlot.LEGS)
+    // もしアイテムがレギンスでない場合、そのアイテムを返す
+    private fun saveLeggingsOrGiveBack(player: Player, leggings: ItemStack?) {
+        val playerArmorComplement = PlayerArmorComplement(plugin, player)
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemLeggings(leggings?.type)) {
+            giveItemBack(player, leggings)
+            playerArmorComplement.complementArmor(ItemStack(Material.AIR), EnumItemSlot.LEGS)
+        } else {
+            playerArmorComplement.complementArmor(leggings, EnumItemSlot.LEGS)
+        }
     }
 
     // プレイヤーのブーツを保存するメソッド
-    private fun savePlayerBoots(
-        playerArmorComplement: PlayerArmorComplement,
-        inventory: Inventory
-    ) {
-        val boots = inventory.contents[16]
-        playerArmorComplement.complementArmor(boots, EnumItemSlot.FEET)
+    // もしアイテムがブーツでない場合、そのアイテムを返す
+    private fun saveBootsOrGiveBack(player: Player, boots: ItemStack?) {
+        val playerArmorComplement = PlayerArmorComplement(plugin, player)
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemBoots(boots?.type)) {
+            giveItemBack(player, boots)
+            playerArmorComplement.complementArmor(ItemStack(Material.AIR), EnumItemSlot.FEET)
+        } else {
+            playerArmorComplement.complementArmor(boots, EnumItemSlot.FEET)
+        }
     }
+
+    // アイテムをプレイヤーに返すメソッド
+    // インベントリーが満タンだった場合はその場にアイテムを落とす
+    private fun giveItemBack(player: Player, item: ItemStack?) {
+        val playerInv = player.inventory
+        if (item == null) return
+        if (isInvFull(playerInv)) {
+            player.world.dropItem(player.location, item)
+        }
+        playerInv.addItem(item)
+    }
+
+    // プレイヤーのインベントリーが満タンかどうか確認するメソッド
+    private fun isInvFull(playerInv: PlayerInventory): Boolean =
+        playerInv.firstEmpty() == -1
 }
