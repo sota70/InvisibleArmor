@@ -2,15 +2,27 @@ package com.invisiblearmor.damagecalculator
 
 import com.invisiblearmor.InvisibleArmor
 import com.invisiblearmor.armordata.PlayerArmorLoader
+import com.invisiblearmor.util.ArmorIdentifier
 import net.minecraft.server.v1_16_R3.EnumItemSlot
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
+/**
+ * アーマーのアーマーポイントを取得してその合計を計算して返すクラス
+ *
+ * @property plugin プラグインのメインクラス
+ * @property player 取得するアーマーを装備しているプレイヤー
+ */
 class ArmorPointCalculator(
     private val plugin: InvisibleArmor,
     private val player: Player
 ) {
 
+    /**
+     * プレイヤーの装備しているアーマーのアーマーポイントを取得してその合計を計算して返すメソッド
+     *
+     * @return アーマーポイントの合計値を[Double]型で返す
+     */
     fun calcPlayerArmorPoint(): Double {
         val playerArmorLoader = PlayerArmorLoader(plugin, player)
         return fetchHelmetArmorPoint(playerArmorLoader) +
@@ -19,9 +31,11 @@ class ArmorPointCalculator(
             fetchBootsArmorPoint(playerArmorLoader)
     }
 
+    // ヘルメットのアーマーポイントを取得するメソッド
     private fun fetchHelmetArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
         val playerHelmet = playerArmorLoader.loadArmor(EnumItemSlot.HEAD)
-        if (!isHelmet(playerHelmet.type)) return 0.0
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemHelmet(playerHelmet.type)) return 0.0
         return when (playerHelmet.type) {
             Material.LEATHER_HELMET -> 1.0
             Material.CHAINMAIL_HELMET -> 2.0
@@ -32,9 +46,11 @@ class ArmorPointCalculator(
         }
     }
 
+    // チェストプレートのアーマーポイントを取得するメソッド
     private fun fetchChestplateArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
         val playerChestplate = playerArmorLoader.loadArmor(EnumItemSlot.CHEST)
-        if (!isChestplate(playerChestplate.type)) return 0.0
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemChestplate(playerChestplate.type)) return 0.0
         return when (playerChestplate.type) {
             Material.LEATHER_CHESTPLATE -> 3.0
             Material.CHAINMAIL_CHESTPLATE -> 5.0
@@ -45,9 +61,11 @@ class ArmorPointCalculator(
         }
     }
 
+    // レギンスのアーマーポイントを取得するメソッド
     private fun fetchLeggingsArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
         val playerLeggings = playerArmorLoader.loadArmor(EnumItemSlot.LEGS)
-        if (!isLeggings(playerLeggings.type)) return 0.0
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemLeggings(playerLeggings.type)) return 0.0
         return when (playerLeggings.type) {
             Material.LEATHER_LEGGINGS -> 2.0
             Material.CHAINMAIL_LEGGINGS -> 4.0
@@ -58,9 +76,11 @@ class ArmorPointCalculator(
         }
     }
 
+    // ブーツのアーマーポイントを取得するメソッド
     private fun fetchBootsArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
         val playerBoots = playerArmorLoader.loadArmor(EnumItemSlot.FEET)
-        if (!isBoots(playerBoots.type)) return 0.0
+        val armorIdentifier = ArmorIdentifier()
+        if (!armorIdentifier.isItemBoots(playerBoots.type)) return 0.0
         return when (playerBoots.type) {
             Material.LEATHER_BOOTS -> 1.0
             Material.CHAINMAIL_BOOTS -> 1.0
@@ -69,49 +89,5 @@ class ArmorPointCalculator(
             Material.DIAMOND_BOOTS -> 3.0
             else -> throw IllegalStateException("fetchHelmetArmorPointで予期できない例外が発生しました")
         }
-    }
-
-    private fun isHelmet(itemType: Material): Boolean {
-        val helmet = arrayOf(
-            Material.LEATHER_HELMET,
-            Material.CHAINMAIL_HELMET,
-            Material.IRON_HELMET,
-            Material.GOLDEN_HELMET,
-            Material.DIAMOND_HELMET
-        )
-        return itemType in helmet
-    }
-
-    private fun isChestplate(itemType: Material): Boolean {
-        val chestplate = arrayOf(
-            Material.LEATHER_CHESTPLATE,
-            Material.CHAINMAIL_CHESTPLATE,
-            Material.IRON_CHESTPLATE,
-            Material.GOLDEN_CHESTPLATE,
-            Material.DIAMOND_CHESTPLATE
-        )
-        return itemType in chestplate
-    }
-
-    private fun isLeggings(itemType: Material): Boolean {
-        val leggings = arrayOf(
-            Material.LEATHER_LEGGINGS,
-            Material.CHAINMAIL_LEGGINGS,
-            Material.IRON_LEGGINGS,
-            Material.GOLDEN_LEGGINGS,
-            Material.DIAMOND_LEGGINGS
-        )
-        return itemType in leggings
-    }
-
-    private fun isBoots(itemType: Material): Boolean {
-        val boots = arrayOf(
-            Material.LEATHER_BOOTS,
-            Material.CHAINMAIL_BOOTS,
-            Material.IRON_BOOTS,
-            Material.GOLDEN_BOOTS,
-            Material.DIAMOND_BOOTS
-        )
-        return itemType in boots
     }
 }
