@@ -16,7 +16,6 @@ class PlayerArmorInitializer(
 
     /**
      * プレイヤーのデータを初期化するメソッド
-     * ToDo: コンフィグにアーマーデータを保存して、初期化時に呼び出す処理を作る
      */
     fun initPlayerArmorData() {
         if (isPlayerAlreadyInitialized()) return
