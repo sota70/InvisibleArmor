@@ -1,7 +1,7 @@
 package com.invisiblearmor.armorgui
 
 import com.invisiblearmor.InvisibleArmor
-import com.invisiblearmor.armordata.PlayerArmorLoader
+import com.invisiblearmor.armordata.armorloader.PlayerArmorLoader
 import com.invisiblearmor.template.ArmorGUIName.ARMOR_GUI_NAME
 import net.minecraft.server.v1_16_R3.EnumItemSlot
 import org.bukkit.Bukkit
