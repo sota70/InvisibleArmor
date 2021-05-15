@@ -1,4 +1,4 @@
-package com.invisiblearmor.armordata
+package com.invisiblearmor.armordata.armorloader
 
 import com.invisiblearmor.InvisibleArmor
 import net.minecraft.server.v1_16_R3.EnumItemSlot
@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack
  * @property plugin プラグインのメインクラス
  * @property player 読み込む対象のプレイヤー
  */
-class PlayerArmorLoader(
+open class PlayerArmorLoader(
     private val plugin: InvisibleArmor,
     private val player: Player
 ) {

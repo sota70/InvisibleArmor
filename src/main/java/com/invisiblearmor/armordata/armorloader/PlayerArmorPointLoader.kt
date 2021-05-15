@@ -1,41 +1,39 @@
-package com.invisiblearmor.damagecalculator
+package com.invisiblearmor.armordata.armorloader
 
 import com.invisiblearmor.InvisibleArmor
-import com.invisiblearmor.armordata.PlayerArmorLoader
 import com.invisiblearmor.util.ArmorIdentifier
 import net.minecraft.server.v1_16_R3.EnumItemSlot
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
 /**
- * アーマーのアーマーポイントを取得してその合計を計算して返すクラス
+ * プレイヤーの保存しているアーマーからアーマーポイントを取得するクラス
  *
  * @property plugin プラグインのメインクラス
  * @property player 取得するアーマーを装備しているプレイヤー
  */
-class ArmorPointCalculator(
-    private val plugin: InvisibleArmor,
-    private val player: Player
-) {
+class PlayerArmorPointLoader(
+    plugin: InvisibleArmor,
+    player: Player
+) : PlayerArmorLoader(plugin, player) {
 
     /**
      * プレイヤーの装備しているアーマーのアーマーポイントを取得してその合計を計算して返すメソッド
      *
      * @return アーマーポイントの合計値を[Double]型で返す
      */
-    fun calcPlayerArmorPoint(): Double {
-        val playerArmorLoader = PlayerArmorLoader(plugin, player)
-        return fetchHelmetArmorPoint(playerArmorLoader) +
-            fetchChestplateArmorPoint(playerArmorLoader) +
-            fetchLeggingsArmorPoint(playerArmorLoader) +
-            fetchBootsArmorPoint(playerArmorLoader)
+    fun fetchPlayerArmorPoint(): Double {
+        return fetchHelmetArmorPoint() +
+            fetchChestplateArmorPoint() +
+            fetchLeggingsArmorPoint() +
+            fetchBootsArmorPoint()
     }
 
     // ヘルメットのアーマーポイントを取得するメソッド
-    private fun fetchHelmetArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
-        val playerHelmet = playerArmorLoader.loadArmor(EnumItemSlot.HEAD)
-        val armorIdentifier = ArmorIdentifier()
-        if (!armorIdentifier.isItemHelmet(playerHelmet.type)) return 0.0
+    private fun fetchHelmetArmorPoint(): Double {
+        val playerHelmet = loadArmor(EnumItemSlot.HEAD)
+        val armorIdentifier = ArmorIdentifier(playerHelmet.type)
+        if (!armorIdentifier.isItemHelmet()) return 0.0
         return when (playerHelmet.type) {
             Material.LEATHER_HELMET -> 1.0
             Material.CHAINMAIL_HELMET -> 2.0
@@ -47,10 +45,13 @@ class ArmorPointCalculator(
     }
 
     // チェストプレートのアーマーポイントを取得するメソッド
-    private fun fetchChestplateArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
-        val playerChestplate = playerArmorLoader.loadArmor(EnumItemSlot.CHEST)
-        val armorIdentifier = ArmorIdentifier()
-        if (!armorIdentifier.isItemChestplate(playerChestplate.type)) return 0.0
+    private fun fetchChestplateArmorPoint(): Double {
+        val playerChestplate = loadArmor(EnumItemSlot.CHEST)
+        val armorIdentifier = ArmorIdentifier(playerChestplate.type)
+        if (!armorIdentifier.isItemChestplate()) return 0.0
+
+        // デバッグ用
+        // attributeModifiersがチェストプレートにそもそもない
         return when (playerChestplate.type) {
             Material.LEATHER_CHESTPLATE -> 3.0
             Material.CHAINMAIL_CHESTPLATE -> 5.0
@@ -62,10 +63,10 @@ class ArmorPointCalculator(
     }
 
     // レギンスのアーマーポイントを取得するメソッド
-    private fun fetchLeggingsArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
-        val playerLeggings = playerArmorLoader.loadArmor(EnumItemSlot.LEGS)
-        val armorIdentifier = ArmorIdentifier()
-        if (!armorIdentifier.isItemLeggings(playerLeggings.type)) return 0.0
+    private fun fetchLeggingsArmorPoint(): Double {
+        val playerLeggings = loadArmor(EnumItemSlot.LEGS)
+        val armorIdentifier = ArmorIdentifier(playerLeggings.type)
+        if (!armorIdentifier.isItemLeggings()) return 0.0
         return when (playerLeggings.type) {
             Material.LEATHER_LEGGINGS -> 2.0
             Material.CHAINMAIL_LEGGINGS -> 4.0
@@ -77,10 +78,10 @@ class ArmorPointCalculator(
     }
 
     // ブーツのアーマーポイントを取得するメソッド
-    private fun fetchBootsArmorPoint(playerArmorLoader: PlayerArmorLoader): Double {
-        val playerBoots = playerArmorLoader.loadArmor(EnumItemSlot.FEET)
-        val armorIdentifier = ArmorIdentifier()
-        if (!armorIdentifier.isItemBoots(playerBoots.type)) return 0.0
+    private fun fetchBootsArmorPoint(): Double {
+        val playerBoots = loadArmor(EnumItemSlot.FEET)
+        val armorIdentifier = ArmorIdentifier(playerBoots.type)
+        if (!armorIdentifier.isItemBoots()) return 0.0
         return when (playerBoots.type) {
             Material.LEATHER_BOOTS -> 1.0
             Material.CHAINMAIL_BOOTS -> 1.0
