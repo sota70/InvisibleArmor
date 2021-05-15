@@ -74,3 +74,8 @@ jar {
         }
     }
 }
+
+// Set jar output directory to plugins folder
+tasks.withType(Jar) {
+    destinationDirectory = file("C:\\Users\\Sota\\AppData\\Roaming\\.minecraft\\server\\plugins")
+}
