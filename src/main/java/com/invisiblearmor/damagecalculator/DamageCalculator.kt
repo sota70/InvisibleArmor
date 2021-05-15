@@ -1,35 +1,14 @@
 package com.invisiblearmor.damagecalculator
 
-import com.invisiblearmor.InvisibleArmor
-import org.bukkit.entity.Player
-import kotlin.math.min
-
 /**
- * ダメージを計算するクラス
- *
- * @property player 計算対象のプレイヤー
- * @property damage 受けたダメージ
+ * ダメージ計算クラスのベースとなるインターフェース
  */
-class DamageCalculator(
-    private val plugin: InvisibleArmor,
-    private val player: Player,
-    private val damage: Double
-) {
+interface DamageCalculator {
 
     /**
-     * ダメージ軽減値を用いて最終的なダメージ値を計算するメソッド
-     * [参考にしたサイト][https://minecraft.fandom.com/wiki/Armor]
-     * 参考にした公式: マイクラのダメージ公式をそのまま採用
+     * ダメージ軽減値から計算した最終ダメージを返すメソッド
      *
-     * @return 最終的なダメージ値を[Double]型で返す
+     * @return 最終ダメージを[Double]型で返す
      */
-    fun calcFinalDamage(): Double {
-        val playerArmorPoint = ArmorPointCalculator(plugin, player).calcPlayerArmorPoint().toInt()
-        val finalDamage =
-            damage * (1 - (min(20.0, (playerArmorPoint / 5.0).coerceAtLeast(playerArmorPoint - (4 * damage) / 8))) / 25)
-
-        // デバッグ用
-        println("Total Player ArmorPoint: $playerArmorPoint")
-        return finalDamage
-    }
+    fun calcFinalDamage(): Double
 }
