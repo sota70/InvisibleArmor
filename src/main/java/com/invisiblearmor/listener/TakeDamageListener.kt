@@ -2,7 +2,7 @@ package com.invisiblearmor.listener
 
 import com.invisiblearmor.InvisibleArmor
 import com.invisiblearmor.damagecalculator.DamageCalculatorFactory
-import com.invisiblearmor.playerstatus.StatusUpdaterFactory
+import com.invisiblearmor.playerstatusupdater.StatusUpdaterFactory
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -34,6 +34,7 @@ class TakeDamageListener(private val plugin: InvisibleArmor) : Listener {
         println("Final Damage: $finalDamage")
     }
 
+    // ArmorGUIにあるアーマーのアーマー値からFinal Damageを計算して返すメソッド
     private fun calcFinalDamage(
         player: Player,
         takenDamage: Double,
@@ -44,6 +45,7 @@ class TakeDamageListener(private val plugin: InvisibleArmor) : Listener {
         return damageCalculator.calcFinalDamage()
     }
 
+    // プレイヤーの状態を更新するメソッド
     private fun updatePlayerStatus(
         player: Player,
         damageType: DamageCause
