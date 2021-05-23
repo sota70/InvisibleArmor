@@ -1,4 +1,4 @@
-package com.invisiblearmor.playerstatus
+package com.invisiblearmor.playerstatusupdater
 
 import com.invisiblearmor.InvisibleArmor
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
@@ -16,7 +16,8 @@ class StatusUpdaterFactory(private val plugin: InvisibleArmor) {
      * @return ダメージの種類に合った[PlayerStatusUpdater]クラスを返す
      */
     fun createStatusUpdater(damageType: DamageCause): PlayerStatusUpdater = when (damageType) {
-        DamageCause.LAVA -> FireTickStatusUpdater(plugin)
-        else -> throw IllegalStateException("ステータスの変化は特になし")
+        DamageCause.LAVA -> LavaFireTickStatusUpdater(plugin)
+        DamageCause.FIRE -> FireFireTickStatusUpdater(plugin)
+        else -> NullStatusUpdater()
     }
 }

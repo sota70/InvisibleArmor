@@ -1,4 +1,4 @@
-package com.invisiblearmor.playerstatus
+package com.invisiblearmor.playerstatusupdater
 
 import org.bukkit.entity.Player
 

@@ -1,4 +1,4 @@
-package com.invisiblearmor.playerstatus
+package com.invisiblearmor.playerstatusupdater
 
 import com.invisiblearmor.InvisibleArmor
 import com.invisiblearmor.armordata.armorloader.PlayerFireTickReductionLoader
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player
  *
  * @property plugin プラグインのメインクラス
  */
-class FireTickStatusUpdater(private val plugin: InvisibleArmor) : PlayerStatusUpdater {
+class LavaFireTickStatusUpdater(private val plugin: InvisibleArmor) : PlayerStatusUpdater {
 
     /**
      * Fire Protectionエンチャントを装備しているプレイヤーのFire Tickを軽減するメソッド
@@ -24,9 +24,10 @@ class FireTickStatusUpdater(private val plugin: InvisibleArmor) : PlayerStatusUp
     override fun updateStatus(player: Player) {
         val fireTickReduction =
             player.fireTicks * PlayerFireTickReductionLoader(plugin, player).fetchPlayerFireTickReduction()
+        val finalFireTick = player.fireTicks - fireTickReduction.toInt()
         Bukkit.getScheduler().runTaskLater(
             plugin,
-            Runnable { player.fireTicks = player.fireTicks - fireTickReduction.toInt() },
+            Runnable { player.fireTicks = finalFireTick },
             7
         )
     }
