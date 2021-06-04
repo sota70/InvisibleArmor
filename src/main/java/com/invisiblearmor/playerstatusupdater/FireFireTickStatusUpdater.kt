@@ -3,7 +3,7 @@ package com.invisiblearmor.playerstatusupdater
 import com.invisiblearmor.InvisibleArmor
 import com.invisiblearmor.armordata.armorloader.PlayerFireTickReductionLoader
 import com.invisiblearmor.onfiretag.FireTagger
-import org.bukkit.Bukkit
+import com.invisiblearmor.util.TaskRunner
 import org.bukkit.entity.Player
 
 /**
@@ -54,11 +54,7 @@ class FireFireTickStatusUpdater(
             fireTagger.changeFireTaggedTime(oldTaggedTime - 1)
             decreaseFireTaggedTime(player)
         }
-        Bukkit.getScheduler().runTaskLater(
-            plugin,
-            task,
-            1
-        )
+        TaskRunner(plugin).runTaskLater(1, task)
     }
 
     // プレイヤーのFire Tickを再計算してセットするメソッド

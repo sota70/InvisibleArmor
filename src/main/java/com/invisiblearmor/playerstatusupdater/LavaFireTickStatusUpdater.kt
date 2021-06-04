@@ -2,7 +2,7 @@ package com.invisiblearmor.playerstatusupdater
 
 import com.invisiblearmor.InvisibleArmor
 import com.invisiblearmor.armordata.armorloader.PlayerFireTickReductionLoader
-import org.bukkit.Bukkit
+import com.invisiblearmor.util.TaskRunner
 import org.bukkit.entity.Player
 
 /**
@@ -25,10 +25,6 @@ class LavaFireTickStatusUpdater(private val plugin: InvisibleArmor) : PlayerStat
         val fireTickReduction =
             player.fireTicks * PlayerFireTickReductionLoader(plugin, player).fetchPlayerFireTickReduction()
         val finalFireTick = player.fireTicks - fireTickReduction.toInt()
-        Bukkit.getScheduler().runTaskLater(
-            plugin,
-            Runnable { player.fireTicks = finalFireTick },
-            7
-        )
+        TaskRunner(plugin).runTaskLater(7) { player.fireTicks = finalFireTick }
     }
 }
