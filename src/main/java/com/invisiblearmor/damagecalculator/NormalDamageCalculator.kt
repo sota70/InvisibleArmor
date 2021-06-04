@@ -1,6 +1,7 @@
 package com.invisiblearmor.damagecalculator
 
 import com.invisiblearmor.InvisibleArmor
+import com.invisiblearmor.announcement.DebugLogAnnounce
 import com.invisiblearmor.armordata.armorloader.PlayerArmorPointLoader
 import com.invisiblearmor.armordata.armorloader.PlayerArmorToughnessLoader
 import org.bukkit.entity.Player
@@ -32,7 +33,9 @@ class NormalDamageCalculator(
             damage * (1 - (min(20.0, (playerArmorPoint / 5.0).coerceAtLeast(playerArmorPoint - (4 * damage) / (playerArmorToughness + 8)))) / 25)
 
         // デバッグ用
-        println("Total Player ArmorPoint: $playerArmorPoint")
+        val debugMessage = "Total Player ArmorPoint: $playerArmorPoint"
+        val debugLogAnnounce = DebugLogAnnounce(player)
+        debugLogAnnounce.announce(debugMessage)
         return finalDamage
     }
 }

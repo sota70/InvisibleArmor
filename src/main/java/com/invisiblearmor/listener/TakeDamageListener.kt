@@ -1,6 +1,7 @@
 package com.invisiblearmor.listener
 
 import com.invisiblearmor.InvisibleArmor
+import com.invisiblearmor.announcement.DebugLogAnnounce
 import com.invisiblearmor.damagecalculator.DamageCalculatorFactory
 import com.invisiblearmor.playerstatusupdater.StatusUpdaterFactory
 import org.bukkit.entity.Player
@@ -17,6 +18,7 @@ class TakeDamageListener(private val plugin: InvisibleArmor) : Listener {
     /**
      * ダメージを受けた時にArmorGUIにあるアーマーのアーマー値を持ってきて
      * 装備を着ている時と同じダメージに計算しなおすメソッド
+     * Fire Tickなどのプレイヤーの状態の変化などもここで処理している
      *
      * @param event ダメージを受けたことを感知するイベント
      */
@@ -30,8 +32,12 @@ class TakeDamageListener(private val plugin: InvisibleArmor) : Listener {
         updatePlayerStatus(player, event.cause)
 
         // デバッグ用
-        println("Taken Damage: $takenDamage")
-        println("Final Damage: $finalDamage")
+        val playerDamageLog = arrayOf(
+            "Taken Damage: $takenDamage",
+            "Final Damage: $finalDamage"
+        )
+        val debugLogAnnounce = DebugLogAnnounce(player)
+        debugLogAnnounce.announce(playerDamageLog)
     }
 
     // ArmorGUIにあるアーマーのアーマー値からFinal Damageを計算して返すメソッド
