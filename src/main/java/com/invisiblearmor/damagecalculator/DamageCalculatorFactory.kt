@@ -30,6 +30,8 @@ class DamageCalculatorFactory(
             DamageCause.LAVA -> LavaDamageCalculator(plugin, player, damage)
             DamageCause.FIRE -> FireDamageCalculator(plugin, player, damage)
             DamageCause.FIRE_TICK -> FireDamageCalculator(plugin, player, damage)
+            DamageCause.BLOCK_EXPLOSION -> ExplosionDamageCalculator(plugin, player, damage)
+            DamageCause.ENTITY_EXPLOSION -> ExplosionDamageCalculator(plugin, player, damage)
             else -> throw IllegalStateException("予期せぬ例外が発生しました")
         }
     }
