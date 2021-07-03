@@ -1,9 +1,9 @@
-name: InvisibleArmor
+name: NeoInvisibleArmor
 version: @version@
-author: sota70
-main: com.invisiblearmor.InvisibleArmor
+main: com.neoinvisiblearmor.NeoInvisibleArmor
 api-version: 1.16
+author: sota70
 commands:
-  hidearmor:
-    description: "This command hides your(or someone)'s armor"
-    usage: /hidearmor
+  neoinvisiblearmor:
+    aliases: nia
+    description: "It allows to open Armor GUI"
