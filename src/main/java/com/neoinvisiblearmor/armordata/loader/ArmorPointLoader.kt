@@ -1,4 +1,4 @@
-package com.neoinvisiblearmor.armordata.armorloader
+package com.neoinvisiblearmor.armordata.loader
 
 import com.neoinvisiblearmor.NeoInvisibleArmor
 import com.neoinvisiblearmor.util.ArmorPointConverter
@@ -34,16 +34,19 @@ class ArmorPointLoader(
          if文でそれらを最初に抜き出して、0.0を返すようにする必要がある
          そうしないと、ちゃんとしたダメージが計算できない
          */
-        if (damageType != DamageCause.ENTITY_ATTACK &&
-            damageType != DamageCause.PROJECTILE &&
-            damageType != DamageCause.FIRE &&
-            damageType != DamageCause.LAVA &&
-            damageType != DamageCause.CONTACT &&
-            damageType != DamageCause.ENTITY_EXPLOSION &&
-            damageType != DamageCause.BLOCK_EXPLOSION &&
-            damageType != DamageCause.LIGHTNING &&
-            damageType != DamageCause.FALLING_BLOCK &&
-            damageType != DamageCause.THORNS
+        if (damageType == DamageCause.FIRE ||
+            damageType == DamageCause.FIRE_TICK ||
+            damageType == DamageCause.FALL ||
+            damageType == DamageCause.CRAMMING ||
+            damageType == DamageCause.DROWNING ||
+            damageType == DamageCause.FLY_INTO_WALL ||
+            damageType == DamageCause.MAGIC ||
+            damageType == DamageCause.POISON ||
+            damageType == DamageCause.STARVATION ||
+            damageType == DamageCause.SUFFOCATION ||
+            damageType == DamageCause.VOID ||
+            damageType == DamageCause.WITHER ||
+            damageType == DamageCause.DRAGON_BREATH
         ) {
             return 0.0
         }
@@ -55,10 +58,10 @@ class ArmorPointLoader(
 
     // ArmorContentからアーマーポイントを取得するメソッド
     private fun fetchArmorPointFromArmorContent(): Double {
-        val helmetType = player.inventory.helmet?.type ?: Material.BARRIER
-        val chestplateType = player.inventory.chestplate?.type ?: Material.BARRIER
-        val leggingsType = player.inventory.leggings?.type ?: Material.BARRIER
-        val bootsType = player.inventory.boots?.type ?: Material.BARRIER
+        val helmetType = player.inventory.helmet?.type ?: Material.AIR
+        val chestplateType = player.inventory.chestplate?.type ?: Material.AIR
+        val leggingsType = player.inventory.leggings?.type ?: Material.AIR
+        val bootsType = player.inventory.boots?.type ?: Material.AIR
         val helmetPoint = ArmorPointConverter(helmetType).convert()
         val chestplatePoint = ArmorPointConverter(chestplateType).convert()
         val leggingsPoint = ArmorPointConverter(leggingsType).convert()
