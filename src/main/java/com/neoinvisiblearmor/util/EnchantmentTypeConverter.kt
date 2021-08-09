@@ -23,14 +23,14 @@ class EnchantmentTypeConverter(
         val enchantments = mutableListOf<Enchantment>()
         if (damageType != DamageCause.STARVATION &&
             damageType != DamageCause.SUICIDE &&
-            damageType != DamageCause.VOID &&
-            damageType != DamageCause.FALL
+            damageType != DamageCause.VOID
         ) {
             enchantments.add(Enchantment.PROTECTION_ENVIRONMENTAL)
         }
         if (damageType == DamageCause.FIRE ||
             damageType == DamageCause.LAVA ||
-            damageType == DamageCause.FIRE_TICK
+            damageType == DamageCause.FIRE_TICK ||
+            damageType == DamageCause.HOT_FLOOR
         ) {
             enchantments.add(Enchantment.PROTECTION_FIRE)
         }
