@@ -24,7 +24,7 @@ class PlayerArmorInitializer(
     }
 
     // すでにプレイヤーのアーマーデータが初期化されているか確認するメソッド
-    private fun isPlayerAlreadyInitialized(): Boolean {
+    fun isPlayerAlreadyInitialized(): Boolean {
         val playerArmorData = plugin.getPlayerArmorData()
         return playerArmorData.containsKey(player)
     }
