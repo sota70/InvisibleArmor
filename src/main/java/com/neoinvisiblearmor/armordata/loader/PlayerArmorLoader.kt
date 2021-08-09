@@ -1,6 +1,7 @@
-package com.neoinvisiblearmor.armordata.armorloader
+package com.neoinvisiblearmor.armordata.loader
 
 import com.neoinvisiblearmor.NeoInvisibleArmor
+import com.neoinvisiblearmor.armordata.PlayerArmorInitializer
 import net.minecraft.server.v1_16_R3.EnumItemSlot
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -24,6 +25,7 @@ open class PlayerArmorLoader(
      * @return 読み込んだ[ItemStack]を返す
      */
     fun loadArmor(equipmentSlot: EnumItemSlot): ItemStack {
+        initPlayerArmorDataIfNotInit()
         val playerArmorData = plugin.getPlayerArmorData()
         return when (equipmentSlot) {
             EnumItemSlot.HEAD -> playerArmorData[player]?.helmet ?: ItemStack(Material.AIR)
@@ -32,5 +34,11 @@ open class PlayerArmorLoader(
             EnumItemSlot.FEET -> playerArmorData[player]?.boots ?: ItemStack(Material.AIR)
             else -> throw IllegalStateException("loadArmorメソッドで予期できない例外が発生しました")
         }
+    }
+
+    private fun initPlayerArmorDataIfNotInit() {
+        val playerArmorInitializer = PlayerArmorInitializer(plugin, player)
+        if (playerArmorInitializer.isPlayerAlreadyInitialized()) return
+        playerArmorInitializer.initPlayerArmorData()
     }
 }
