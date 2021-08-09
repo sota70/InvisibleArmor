@@ -1,4 +1,4 @@
-package com.neoinvisiblearmor.armordata.armorloader
+package com.neoinvisiblearmor.armordata.loader
 
 import com.neoinvisiblearmor.NeoInvisibleArmor
 import com.neoinvisiblearmor.util.EnchantmentEPFConverter
