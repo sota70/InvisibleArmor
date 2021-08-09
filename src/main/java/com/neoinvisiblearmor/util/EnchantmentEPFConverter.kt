@@ -15,15 +15,15 @@ class EnchantmentEPFConverter(
 ) {
 
     private val epfLevels = hashMapOf(
-        Enchantment.PROTECTION_ENVIRONMENTAL to arrayOf(1.0, 2.0, 3.0, 5.0),
-        Enchantment.PROTECTION_FALL to arrayOf(5.0, 8.0, 12.0, 18.0),
-        Enchantment.PROTECTION_EXPLOSIONS to arrayOf(3.0, 5.0, 7.0, 11.0),
-        Enchantment.PROTECTION_FIRE to arrayOf(2.0, 4.0, 6.0, 9.0),
-        Enchantment.PROTECTION_PROJECTILE to arrayOf(3.0, 5.0, 7.0, 11.0)
+        Enchantment.PROTECTION_ENVIRONMENTAL to arrayOf(1.0, 2.0, 3.0, 4.0),
+        Enchantment.PROTECTION_FALL to arrayOf(3.0, 6.0, 9.0, 12.0),
+        Enchantment.PROTECTION_EXPLOSIONS to arrayOf(2.0, 4.0, 6.0, 8.0),
+        Enchantment.PROTECTION_FIRE to arrayOf(2.0, 4.0, 6.0, 8.0),
+        Enchantment.PROTECTION_PROJECTILE to arrayOf(2.0, 4.0, 6.0, 8.0)
     )
 
     /**
-     * 各エンチャント、エンチャントレベルに適したepf値を[epfs]から取ってきて返すメソッド
+     * 各エンチャント、エンチャントレベルに適したepf値を[epfLevels]から取ってきて返すメソッド
      *
      * @return 各エンチャント、エンチャントレベルに適したepf値を[Double]型で返す
      */
